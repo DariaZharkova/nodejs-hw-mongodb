@@ -8,10 +8,14 @@ const baseContactFields = {
     'any.required': 'Name is required',
   }),
 
-  phoneNumber: Joi.string().messages({
-    'string.base': 'Phone number must be a string',
-    'any.required': 'Phone number is required',
-  }),
+  phoneNumber: Joi.string()
+    .pattern(/^\+?[0-9\s\-()]{10,20}$/)
+    .messages({
+      'string.base': 'Phone number must be a string',
+      'any.required': 'Phone number is required',
+      'string.pattern.base':
+        'Phone number must contain only digits and may include spaces, dashes, parentheses, and an optional plus sign at the beginning. Minimum 10 and maximum 20 characters.',
+    }),
 
   email: Joi.string().email().messages({
     'string.base': 'Email must be a string',
@@ -34,6 +38,3 @@ export const createContactSchema = Joi.object(baseContactFields).fork(
 );
 
 export const updateContactSchema = Joi.object(baseContactFields);
-
-// phoneNumber: Joi.string()
-// .pattern(/^\+?[0-9\s\-()]{10,20}$/) так проще
