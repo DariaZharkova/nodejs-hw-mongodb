@@ -34,3 +34,6 @@ export const createContactSchema = Joi.object(baseContactFields).fork(
 );
 
 export const updateContactSchema = Joi.object(baseContactFields);
+
+// phoneNumber: Joi.string()
+// .pattern(/^\+?[0-9\s\-()]{10,20}$/) так проще
