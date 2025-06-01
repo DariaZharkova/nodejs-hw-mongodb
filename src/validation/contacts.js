@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { isValidObjectId } from 'mongoose';
 
 const baseContactFields = {
   name: Joi.string().min(3).max(20).messages({
@@ -29,6 +30,13 @@ const baseContactFields = {
   contactType: Joi.string().valid('work', 'home', 'personal').messages({
     'string.base': 'Contact type must be a string',
     'any.only': 'Contact type must be one of [work, home, personal]',
+  }),
+
+  userId: Joi.string().custom((value, helper) => {
+    if (value && !isValidObjectId(value)) {
+      return helper.message('User id should be a valid mongo id');
+    }
+    return true;
   }),
 };
 
