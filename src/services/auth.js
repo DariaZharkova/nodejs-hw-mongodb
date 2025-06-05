@@ -1,10 +1,19 @@
+import path from 'node:path';
+import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
 import bcrypt from 'bcrypt';
 import createHttpError from 'http-errors';
+import Handlebars from 'handlebars';
 
 import { UsersCollection } from '../db/models/user.js';
 import { SessionsCollection } from '../db/models/session.js';
-import { FIFTEEN_MINUTES, THIRTY_DAYS } from '../constants/index.js';
+import {
+  FIFTEEN_MINUTES,
+  TEMPLATES_DIR,
+  THIRTY_DAYS,
+} from '../constants/index.js';
+import { sendEmail } from '../utils/sendMail.js';
+import { getEnvVar } from '../utils/getEnvVar.js';
 
 const createSession = () => {
   const accessToken = crypto.randomBytes(30).toString('base64');
@@ -77,5 +86,33 @@ export const refreshUsersSession = async (sessionId, refreshToken) => {
   return await SessionsCollection.create({
     userId: session.userId,
     ...newSession,
+  });
+};
+
+export const requestResetToken = async (email) => {
+  const user = await UsersCollection.findOne({ email });
+
+  if (!user) {
+    throw createHttpError(401, 'User not found');
+  }
+
+  const resetToken = 'My-Token';
+
+  const resetPasswordTemplate = (
+    await fs.readFile(path.join(TEMPLATES_DIR, 'reset-password-email.hbs'))
+  ).toString();
+
+  const template = Handlebars.compile(resetPasswordTemplate);
+
+  const html = template({
+    name: user.name,
+    link: `${getEnvVar('APP_DOMAIN')}/reset-password?token=${resetToken}`,
+  });
+
+  await sendEmail({
+    from: getEnvVar('SMTP_FROM'),
+    to: user.email,
+    subject: 'Reset your password',
+    html,
   });
 };
