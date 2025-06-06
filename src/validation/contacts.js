@@ -38,6 +38,11 @@ const baseContactFields = {
     }
     return true;
   }),
+
+  photo: Joi.string().uri().messages({
+    'string.base': 'Photo must be a string',
+    'string.uri': 'Photo must be a valid URI',
+  }),
 };
 
 export const createContactSchema = Joi.object(baseContactFields).fork(
