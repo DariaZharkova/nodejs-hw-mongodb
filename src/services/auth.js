@@ -4,6 +4,7 @@ import crypto from 'node:crypto';
 import bcrypt from 'bcrypt';
 import createHttpError from 'http-errors';
 import Handlebars from 'handlebars';
+import jwt from 'jsonwebtoken';
 
 import { UsersCollection } from '../db/models/user.js';
 import { SessionsCollection } from '../db/models/session.js';
@@ -96,7 +97,13 @@ export const requestResetToken = async (email) => {
     throw createHttpError(401, 'User not found');
   }
 
-  const resetToken = 'My-Token';
+  const resetToken = jwt.sign(
+    { sub: user._id, email },
+    getEnvVar('JWT_SECRET'),
+    {
+      expiresIn: '5m',
+    },
+  );
 
   const resetPasswordTemplate = (
     await fs.readFile(path.join(TEMPLATES_DIR, 'reset-password-email.hbs'))
@@ -109,10 +116,44 @@ export const requestResetToken = async (email) => {
     link: `${getEnvVar('APP_DOMAIN')}/reset-password?token=${resetToken}`,
   });
 
-  await sendEmail({
-    from: getEnvVar('SMTP_FROM'),
-    to: user.email,
-    subject: 'Reset your password',
-    html,
-  });
+  try {
+    await sendEmail({
+      from: getEnvVar('SMTP_FROM'),
+      to: user.email,
+      subject: 'Reset your password',
+      html,
+    });
+  } catch {
+    throw createHttpError(
+      500,
+      'Failed to send the email, please try again later.',
+    );
+  }
+};
+
+export const resetPassword = async (payload) => {
+  try {
+    const decoded = jwt.verify(payload.token, getEnvVar('JWT_SECRET'));
+
+    const user = await UsersCollection.findById(decoded.sub);
+
+    if (!user) {
+      throw createHttpError(404, 'User not found');
+    }
+
+    const encryptedPassword = await bcrypt.hash(payload.password, 10);
+
+    await UsersCollection.findByIdAndUpdate(user._id, {
+      password: encryptedPassword,
+    });
+    await SessionsCollection.deleteOne({ userId: user._id });
+  } catch (error) {
+    if (
+      error.name === 'TokenExpiredError' ||
+      error.name === 'JsonWebTokenError'
+    ) {
+      throw createHttpError(401, 'Token is expired or invalid.');
+    }
+    throw error;
+  }
 };
