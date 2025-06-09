@@ -15,6 +15,10 @@ import {
 } from '../constants/index.js';
 import { sendEmail } from '../utils/sendMail.js';
 import { getEnvVar } from '../utils/getEnvVar.js';
+import {
+  validateCode,
+  getFullNameFromGoogleTokenPayload,
+} from '../utils/googleOAuth2.js';
 
 const createSession = () => {
   const accessToken = crypto.randomBytes(30).toString('base64');
@@ -156,4 +160,33 @@ export const resetPassword = async (payload) => {
     }
     throw error;
   }
+};
+
+// GOOGLE Authorization
+export const loginOrSignupWithGoogle = async (code) => {
+  const loginTicket = await validateCode(code);
+
+  const payload = loginTicket.getPayload();
+  if (!payload) {
+    throw createHttpError(401);
+  }
+
+  let user = await UsersCollection.findOne({ email: payload.email });
+  if (!user) {
+    const password = await bcrypt.hash(crypto.randomBytes(10), 10);
+    user = await UsersCollection.create({
+      email: payload.email,
+      name: getFullNameFromGoogleTokenPayload(payload),
+      password,
+    });
+  }
+
+  const newSession = createSession();
+
+  const savedSession = await SessionsCollection.create({
+    userId: user._id,
+    ...newSession,
+  });
+
+  return savedSession;
 };
