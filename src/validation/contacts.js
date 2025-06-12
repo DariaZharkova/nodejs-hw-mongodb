@@ -41,7 +41,7 @@ const baseContactFields = {
 };
 
 export const createContactSchema = Joi.object(baseContactFields).fork(
-  ['name', 'phoneNumber'],
+  ['name', 'phoneNumber', 'contactType'],
   (schema) => schema.required(),
 );
 

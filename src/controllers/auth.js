@@ -94,7 +94,7 @@ export const resetPasswordController = async (req, res) => {
 };
 
 // GOOGLE Authorization
-export const getGoogleOAuthUrlController = async (req, res) => {
+export const getGoogleOAuthUrlController = (req, res) => {
   const url = generateAuthUrl();
 
   res.status(200).json({

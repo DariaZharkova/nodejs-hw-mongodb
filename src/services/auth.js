@@ -173,13 +173,18 @@ export const loginOrSignupWithGoogle = async (code) => {
 
   let user = await UsersCollection.findOne({ email: payload.email });
   if (!user) {
-    const password = await bcrypt.hash(crypto.randomBytes(10), 10);
+    const password = await bcrypt.hash(
+      crypto.randomBytes(10).toString('base64'),
+      10,
+    );
     user = await UsersCollection.create({
       email: payload.email,
       name: getFullNameFromGoogleTokenPayload(payload),
       password,
     });
   }
+
+  await SessionsCollection.deleteOne({ userId: user._id });
 
   const newSession = createSession();
 
