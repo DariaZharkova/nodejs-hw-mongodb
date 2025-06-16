@@ -2,9 +2,11 @@ tags:
   - Auth
 summary: Refresh session
 operationId: refreshSession
-description: Refreshes the user's session and returns a new access token
-security:
-  - cookieAuth: []
+description: |
+  Refreshes the user's session by issuing a new access token and updating session cookies.
+
+  ⚠️ **Swagger UI does not store cookies. Please use Postman or your frontend to test this route properly.**
+security: []
 responses:
   '200':
     description: Successfully refreshed the session and returned a new access token

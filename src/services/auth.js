@@ -98,7 +98,7 @@ export const requestResetToken = async (email) => {
   const user = await UsersCollection.findOne({ email });
 
   if (!user) {
-    throw createHttpError(401, 'User not found');
+    throw createHttpError(404, 'User not found');
   }
 
   const resetToken = jwt.sign(
