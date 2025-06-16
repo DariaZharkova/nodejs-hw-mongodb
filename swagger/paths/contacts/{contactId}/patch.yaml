@@ -29,7 +29,7 @@ requestBody:
           email:
             description: Contact's email
             type: string
-            example: example@email
+            example: example@email.com
           isFavourite:
             description: Whether contact is favourite
             type: boolean

@@ -7,7 +7,7 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "description": "This is the API documentation for the Contacts Management system. Provides endpoints for CRUD operations, photo uploads, favorites, contact categorization (work, personal, home), filtering and sorting. Requires Bearer token authentication."
+    "description": "This is the API documentation for the Contacts Management System.\n\n📌 **Features:**\n- CRUD operations for contacts (create, read, update, delete)\n- Upload contact photos (multipart/form-data)\n- Mark contacts as favorites\n- Categorize contacts (work, personal, home)\n- Filter and sort contacts by various fields\n\n🔑 **Authentication:**\n- Requires Bearer token for protected routes\n- Cookie-based session is used for logout/refresh (handled automatically by browser or Postman; Swagger UI does not store cookies)\n"
   },
   "servers": [
     {
@@ -400,7 +400,7 @@
                   "email": {
                     "description": "Contact's email",
                     "type": "string",
-                    "example": "example@email"
+                    "example": "example@email.com"
                   },
                   "isFavourite": {
                     "description": "Whether contact is favourite",
@@ -957,7 +957,7 @@
             "example": "work",
             "default": "personal"
           },
-          "userId:": {
+          "userId": {
             "description": "Contact's user id",
             "type": "string",
             "example": "6838725ff41be6723ae5fb0f"

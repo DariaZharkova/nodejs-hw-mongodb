@@ -36,7 +36,7 @@ properties:
     enum: ['work', 'home', 'personal']
     example: work
     default: personal
-  userId::
+  userId:
     description: Contact's user id
     type: string
     example: 6838725ff41be6723ae5fb0f

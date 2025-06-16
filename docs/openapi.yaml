@@ -5,10 +5,19 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  description: This is the API documentation for the Contacts Management system.
-    Provides endpoints for CRUD operations, photo uploads, favorites,
-    contact categorization (work, personal, home), filtering and sorting.
-    Requires Bearer token authentication.
+  description: |
+    This is the API documentation for the Contacts Management System.
+
+    📌 **Features:**
+    - CRUD operations for contacts (create, read, update, delete)
+    - Upload contact photos (multipart/form-data)
+    - Mark contacts as favorites
+    - Categorize contacts (work, personal, home)
+    - Filter and sort contacts by various fields
+
+    🔑 **Authentication:**
+    - Requires Bearer token for protected routes
+    - Cookie-based session is used for logout/refresh (handled automatically by browser or Postman; Swagger UI does not store cookies)
 tags:
   - name: Contacts
     description: Operations with contacts (CRUD, filtering, etc).
