@@ -45,10 +45,10 @@ responses:
               type: string
               example: Successfully registered a user!
             data:
-              $ref: ../../../components/schemas/user.yaml
+              $ref: ../../components/schemas/user.yaml
   '400':
-    $ref: ../../../components/responses/400.yaml
+    $ref: ../../components/responses/400.yaml
   '409':
-    $ref: ../../../components/responses/409.yaml
+    $ref: ../../components/responses/409.yaml
   '500':
-    $ref: ../../../components/responses/500.yaml
+    $ref: ../../components/responses/500.yaml
