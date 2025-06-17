@@ -36,31 +36,25 @@ npm install
 
 2️⃣ Create `.env`:
 
+```env
 # Server
-
 PORT=3000
 
 # MongoDB Atlas
-
 MONGODB_USER=your_mongo_user
 MONGODB_PASSWORD=your_mongo_password
 MONGODB_URL=your-cluster.mongodb.net
 MONGODB_DB=your_db_name
 
 # JWT
-
 JWT_SECRET=your_jwt_secret
 
 # App domain (used for password reset email link)
-
 APP_DOMAIN=http://localhost:3000
-
 # For production:
-
 APP_DOMAIN=https://your-frontend-domain.com
 
 # Brevo (Sendinblue) SMTP for Nodemailer
-
 SMTP_HOST=smtp-relay.brevo.com
 SMTP_PORT=587
 SMTP_USER=your_brevo_login@example.com
@@ -68,17 +62,14 @@ SMTP_PASSWORD=your_brevo_smtp_key
 SMTP_FROM=your_brevo_login@example.com
 
 # Cloudinary
-
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 
 # Google Auth (optional)
-
 GOOGLE_AUTH_CLIENT_ID=your_google_client_id
 GOOGLE_AUTH_CLIENT_SECRET=your_google_client_secret
-
-````
+```
 
 3️⃣ Run in development:
 
