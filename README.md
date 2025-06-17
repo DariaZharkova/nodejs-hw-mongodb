@@ -1,3 +1,5 @@
+# 📇 Contacts Management API
+
 ## Description (English)
 
 This is a RESTful API for managing user contacts. Built as an educational project to practice CRUD operations, JWT authentication with sessions and cookies, password reset via Brevo SMTP using Nodemailer, and uploading photos to Cloudinary.
@@ -98,7 +100,7 @@ http://localhost:3000/api-docs
 
 Developed as an educational project for [GoIT](https://goit.global/).
 
-# 📇 Contacts Management API
+
 
 ## Опис (Ukrainian)
 
