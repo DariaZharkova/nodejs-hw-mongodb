@@ -17,7 +17,7 @@ properties:
   email:
     description: User's email
     type: string
-    example: example@email.com
+    example: john123@gmail.com
   createdAt:
     type: string
     format: date-time
